@@ -1,7 +1,6 @@
 {
-  "name": "node-express-ts",
+  "name": "ps_task_4",
   "version": "1.0.0",
-  "description": "Node.js + Express.js + TypeScript template project.",
   "main": "./src/server.ts",
   "scripts": {
     "test": "cross-env NODE_ENV=test jest --testTimeout=5000 --detectOpenHandles",
@@ -18,7 +17,6 @@
     "@/db": "dist/db",
     "@/utils": "dist/utils"
   },
-  "author": "takuyadev",
   "license": "ISC",
   "dependencies": {
     "axios": "^1.13.2",
