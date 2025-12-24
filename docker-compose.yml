@@ -1,0 +1,77 @@
+version: "3.9"
+
+services:
+  mongodb:
+    image: mongo:latest
+    container_name: mongodb
+    hostname: mongodb
+    volumes:
+      - ./mongodb/initdb.d/mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
+      - mongodb-data:/data/db
+      - mongodb-log:/var/log/mongodb
+    env_file:
+      - .env
+    environment:
+      MONGODB_INIT_ROOT_USERNAME: 'root' # ${MONGODB_INITDB_ROOT_USERNAME}
+      MONGODB_INIT_ROOT_PASSWORD: 'root' # ${MONGO_DB_INITDB_ROOT_PASSWORD}
+    ports:
+      - "27017:27017"
+    networks:
+      - mongodb-network
+  api:
+    build: .
+    container_name: book-review-api
+    ports:
+      - "3000:3000"
+    environment:
+      DD_SERVICE: book-review-api
+      DD_ENV: dev
+      DD_VERSION: "1.0.0"
+
+      DD_AGENT_HOST: datadog-agent
+      DD_TRACE_AGENT_PORT: 8126
+
+      DD_LOGS_INJECTION: "true"
+      NODE_ENV: development
+
+    depends_on:
+      - datadog-agent
+      - mongodb
+    networks:
+      - mongodb-network
+
+  datadog-agent:
+    image: gcr.io/datadoghq/agent:7
+    container_name: datadog-agent
+    environment:
+      DD_API_KEY: ${DD_API_KEY}
+      DD_SITE: datadoghq.com
+
+      DD_APM_ENABLED: "true"
+
+      DD_DOGSTATSD_NON_LOCAL_TRAFFIC: "true"
+
+      DD_LOGS_ENABLED: "true"
+      DD_LOGS_CONFIG_CONTAINER_COLLECT_ALL: "true"
+
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - /proc/:/host/proc/:ro
+      - /sys/fs/cgroup:/host/sys/fs/cgroup:ro
+
+    ports:
+      - "8126:8126"
+      - "8125:8125/udp"
+
+volumes:
+  mongodb-data:
+    driver: local
+    name: mongo-data
+  mongodb-log:
+    driver: local
+    name: mongo-log
+
+networks:
+  mongodb-network:
+    driver: bridge
+    name: mongo-network
