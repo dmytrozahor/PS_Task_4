@@ -42,3 +42,4 @@ We should develop a separate `NodeJS` service, which shares Rest API for a `Revi
 Use the task `npm run build` to build the application and deploy it with `npm run start` running the application from the root dir.
 
 ### Dependency diagrams (UMLs)
+![UML.png](img/UML.png)
