@@ -61,9 +61,11 @@ export const ReviewService: IReviewService = {
             query._id = { $lt: new Types.ObjectId(dto.from) };
         }
 
+        // _id = ObjectId timestamp-based, so they're monotonically increasing,
+        // sort them descending to comply with requirements
         const docs = await BookReviewModel.find(query)
             .select('_id bookId rating comment createdAt')
-            .sort({ _id: -1 })
+            .sort({ _id: 'desc' })
             .limit(limit + 1)
             .lean()
             .exec();
