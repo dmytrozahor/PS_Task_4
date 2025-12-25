@@ -1,4 +1,4 @@
-## PS_Task_3
+## PS_Task_4
 
 <p>This project features one of the applications developed under the guidance and mentoring during an internship at the company ProfItSoft, the winter fall 2025.</p>
 
@@ -32,7 +32,7 @@ We should develop a separate `NodeJS` service, which shares Rest API for a `Revi
 
 ### Implementation
 
-- The following views were introduced: `BookRating`, `Review`, as well as all the corresponding DTOs.
+- The following structures were introduced: `BookRating`, `Review`, as well as all the corresponding DTOs.
 - `Zod` library was used to maintain separation of architectural layers.
 - A clear structure was maintained to separate `dtos`, `middleware`, `routes`, `services` and `schema`.
 - Integration tests were written for each endpoint.
