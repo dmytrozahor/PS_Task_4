@@ -128,15 +128,11 @@ describe("Review API Integration", () => {
                 { bookId: 621, rating: 3 }
             ]);
 
-            // Call the API
             const res = await request(app)
                 .post("/api/review/_counts")
                 .send({ bookIds: validBookIds })
                 .expect(200);
 
-            // Expect the response to contain counts based on the inserted reviews
-            // The response structure should match what your API actually returns
-            // Usually it's in res.body.data or res.body depending on your controller
             expect(res.body.data).toEqual([
                 { bookId: 620, count: 2 },
                 { bookId: 621, count: 1 },

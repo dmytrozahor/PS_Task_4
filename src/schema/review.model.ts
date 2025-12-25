@@ -1,4 +1,3 @@
-// review.model.ts
 import {Schema, Types, model } from 'mongoose';
 
 export interface Review {

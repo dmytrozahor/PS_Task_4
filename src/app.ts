@@ -1,4 +1,4 @@
-import './config/datadog'; // MUST be first
+import './config/datadog';
 
 import express from "express";
 import tracer from 'dd-trace';

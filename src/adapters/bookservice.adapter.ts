@@ -20,7 +20,8 @@ export const BookServiceAdapter : IBookServiceAdapter = {
             const res = await API_SERVICE.get("/books/" + bookId);
 
             return !(res.status == 404 || res.data['id'] !== bookId);
-        } catch (error){
+        } catch (err){
+            console.error("BookServiceAdapter couldn't resolve the backend.", err)
             return false;
         }
     }

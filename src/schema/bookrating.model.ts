@@ -1,4 +1,3 @@
-// book-rating.model.ts
 import {model, Schema, Types} from "mongoose";
 
 export interface BookRating {
