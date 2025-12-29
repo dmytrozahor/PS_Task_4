@@ -31,6 +31,7 @@
     "mongodb-memory-server": "^11.0.1",
     "mongoose": "^9.0.2",
     "morgan": "^1.10.0",
+    "redux-thunk": "^3.1.0",
     "supertest": "^7.1.4",
     "xss": "^1.0.14",
     "zod": "^4.2.1"

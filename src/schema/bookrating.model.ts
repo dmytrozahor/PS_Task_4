@@ -1,5 +1,7 @@
 import {model, Schema, Types} from "mongoose";
 
+export type RatingKey = 1 | 2 | 3 | 4 | 5;
+
 export interface BookRating {
     _id: Types.ObjectId;
     bookId: number;

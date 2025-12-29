@@ -1,19 +1,22 @@
 import express from "express";
-import {z} from 'zod';
+import { z } from 'zod';
 
-import {countReviews, createReview, listReviews} from "../controllers/review-controller";
-import {GetCountsForBooksDto, GetReviewsFromDto, ReviewCreateDto} from "../dtos/review.dto";
-import {BookServiceAdapter} from "../adapters/bookservice.adapter";
-import {ApiError} from "@/utils/ApiError";
+import { countReviews, createReview, deleteReview, editReview, listReviews } from "../controllers/review-controller";
+import {
+    GetCountsForBooksDto,
+    GetReviewsFromDto,
+    ReviewCreateDto,
+    ReviewDeleteDto,
+    ReviewEditDto
+} from "../dtos/review.dto";
+import { BookServiceAdapter } from "../adapters/bookservice.adapter";
+import { ApiError } from "@/utils/ApiError";
 
 const router = express.Router();
 
 type ValidateSource = 'body' | 'query' | 'params' | 'all';
 
-const validate = (
-    schema: z.ZodSchema,
-    source: ValidateSource = 'body'
-) => {
+const validate = (schema: z.ZodSchema, source: ValidateSource = 'body') => {
     return (req: express.Request, res: express.Response, next: express.NextFunction) => {
         try {
             let dataToValidate: any;
@@ -60,8 +63,8 @@ const validate = (
 const populationValidation = async (
     req: express.Request,
     res: express.Response,
-    next: express.NextFunction
-) => {
+    next: express.NextFunction) =>
+{
     const validData = req.body;
 
     if (validData.bookId) {
@@ -69,18 +72,21 @@ const populationValidation = async (
 
         if (!bookIdExists) {
             return res.status(404).json(
-                new ApiError({},
-                404,
-                "Book with the submitted bookId wasn't found on the backend")
+                new ApiError({}, 404, "Book with the submitted bookId wasn't found on the backend")
             );
         }
     }
 
-    next()
+    next();
 }
 
+// Routes
 router.post("/review", validate(ReviewCreateDto, 'body'), populationValidation, createReview);
 router.get("/review", validate(GetReviewsFromDto, 'query'), listReviews);
+
+router.put("/review/:_id", validate(ReviewEditDto, 'body'), editReview);
+router.delete("/review/:_id", validate(ReviewDeleteDto, 'params'), deleteReview);
+
 router.post("/review/_counts", validate(GetCountsForBooksDto, 'body'), countReviews);
 
 export default router;

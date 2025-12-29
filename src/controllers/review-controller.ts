@@ -18,6 +18,21 @@ export const createReview = asyncHandler(
         res.status(200).json(new ApiSuccess(createdReview, "OK"))
     },
 );
+export const editReview = asyncHandler(
+    async (req: Request, res: Response, next: NextFunction) => {
+        const createdReview = await ReviewService.editReview(req.body);
+
+        res.status(200).json(new ApiSuccess(createdReview, "OK"))
+    },
+);
+
+export const deleteReview = asyncHandler(
+    async (req: Request, res: Response, next: NextFunction) => {
+        const createdReview = await ReviewService.deleteReview(req.body);
+
+        res.status(200).json(new ApiSuccess(createdReview, "OK"))
+    },
+);
 
 export const countReviews = asyncHandler(
     async (req: Request, res: Response, next: NextFunction) => {
