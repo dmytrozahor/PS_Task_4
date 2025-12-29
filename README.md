@@ -30,7 +30,7 @@ We should develop a separate `NodeJS` service, which shares Rest API for a `Revi
 
 - All endpoints work with Review records which are related to Book records
 - Book validation and service integration developed in Task 2
-- Timestamp-based sorting ensures most recent reviews appear first
+- Timestamp-based sorting ensures the most recent reviews appear first
 - The `_counts` endpoint is optimized for batch operations to retrieve review counts for multiple books in a single request
 
 ### Implementation
@@ -46,4 +46,5 @@ We should develop a separate `NodeJS` service, which shares Rest API for a `Revi
 Use the task `npm run build` to build the application and deploy it with `npm run start` running the application from the root dir.
 
 ### Dependency diagrams (UMLs)
-![UML.png](img/UML.png)
+![BE-UML.png](img/BE-UML.png)
+![BE-UML.png](img/FE-UML.png)
