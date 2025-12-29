@@ -5,7 +5,10 @@
 ### Objective
 In this project we should use the capabilities of `NodeJS` and `TypeScript` on the one side and `Java` (with `Spring Framework`) on the other side ([PS-Task-2](https://github.com/dmytrozahor/PS_Task_2)) to develop a service for a book review management.
 
-![img.png](img/img.png)
+Optionally, we can implement the frontend part (implemented, see below)
+
+![img.png](img/BE.png)
+![FE.png](img/FE.png)
 
 ### Requirements
 We should develop a separate `NodeJS` service, which shares Rest API for a `Review` entity. We should utilize `TypeScript` and use `MongoDB` as the DBMS. 
@@ -33,9 +36,10 @@ We should develop a separate `NodeJS` service, which shares Rest API for a `Revi
 ### Implementation
 
 - The following structures were introduced: `BookRating`, `Review`, as well as all the corresponding DTOs.
-- `Zod` library was used to maintain separation of architectural layers.
+- `Zod` library was used to maintain separation of architectural layers and to provide type-based validation.
 - A clear structure was maintained to separate `dtos`, `middleware`, `routes`, `services` and `schema`.
 - Integration tests were written for each endpoint.
+- Additionally, the frontend was developed and introduced an additional functional, including update and delete operations.
 - Additionally, was introduced `Docker` config for a comfortable deployment and `Datadog` (in progress) integration.
 
 ### Building the application
