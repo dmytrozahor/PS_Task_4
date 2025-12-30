@@ -16,7 +16,7 @@ export const ReviewCreateDto = z.object({
     comment: z.string().min(1).max(1000).optional()
 });
 
-// Actually isn't necessary, because reviews aren't meant to be modified, but for debug purposes.
+// Actually isn't necessary because reviews aren't meant to be modified, but for debug purposes.
 export const ReviewEditDto = z.object({
     _id: z.string(),
     rating: z.number().min(1).max(5),

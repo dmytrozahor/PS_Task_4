@@ -8,7 +8,7 @@ import helmet from "helmet";
 import hpp from "hpp";
 import morgan from "morgan";
 import rateLimit from "express-rate-limit";
-import review from './routes/review-route'
+import api from './routers'
 
 dotenv.config();
 
@@ -40,6 +40,6 @@ app.use(helmet());
 
 app.use(hpp());
 
-app.use("/api", review);
+app.use("/api", api);
 
 export default app;

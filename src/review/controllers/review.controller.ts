@@ -1,6 +1,6 @@
 import {NextFunction, Request, Response} from "express";
-import {ApiSuccess} from "../utils/ApiSucess";
-import {asyncHandler} from "../middleware/async-middleware";
+import {ApiSuccess} from "@/utils/ApiSucess";
+import {asyncHandler} from "../../middleware/async-middleware";
 import {ReviewService} from "../services/review.service";
 
 export const listReviews = asyncHandler(

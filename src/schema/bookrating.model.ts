@@ -62,4 +62,4 @@ const bookRatingSchema = new Schema<BookRating>(
 
 bookRatingSchema.index({ bookId: 1 }, { unique: true });
 
-export const BookRatingModel = model<BookRating>("BookRating", bookRatingSchema);
+export const BookratingModel = model<BookRating>("BookRating", bookRatingSchema);

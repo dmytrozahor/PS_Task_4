@@ -1,6 +1,6 @@
 import {Types} from "mongoose";
-import {BookReviewModel, Review} from '../schema/review.model';
-import {BookRatingModel, RatingKey} from '../schema/bookrating.model';
+import {BookReviewModel, Review} from '../../schema/review.model';
+import {BookratingModel, RatingKey} from '../../schema/bookrating.model';
 import {
     GetCountsForBooksDto,
     GetReviewsFromDto,
@@ -27,7 +27,7 @@ export const ReviewService: IReviewService = {
             comment: dto.comment
         });
 
-        const ratingDoc = await BookRatingModel.findOneAndUpdate(
+        const ratingDoc = await BookratingModel.findOneAndUpdate(
             { bookId: dto.bookId },
             {
                 $inc: {
@@ -46,7 +46,7 @@ export const ReviewService: IReviewService = {
         ).lean();
 
         if (ratingDoc) {
-            await BookRatingModel.updateOne(
+            await BookratingModel.updateOne(
                 { bookId: dto.bookId },
                 { $set: { averageRating: ratingDoc.ratingSum / ratingDoc.reviewCount } }
             );
@@ -77,7 +77,7 @@ export const ReviewService: IReviewService = {
 
         if (!review) return null;
 
-        const ratingDoc = await BookRatingModel.findOne({ bookId: review.bookId }).exec();
+        const ratingDoc = await BookratingModel.findOne({ bookId: review.bookId }).exec();
         if (ratingDoc) {
             const ratingSum = (ratingDoc.ratingSum || 0) - review.rating;
             const reviewCount = Math.max((ratingDoc.reviewCount || 1) - 1, 0);
@@ -86,7 +86,7 @@ export const ReviewService: IReviewService = {
             const key = review.rating as RatingKey;
             updatedDistribution[key] = Math.max((updatedDistribution[key] || 1) - 1, 0);
 
-            await BookRatingModel.updateOne(
+            await BookratingModel.updateOne(
                 { bookId: review.bookId },
                 {
                     $set: {
@@ -111,7 +111,7 @@ export const ReviewService: IReviewService = {
             matchStage._id = { $lt: new Types.ObjectId(dto.from) };
         }
 
-        // _id = ObjectId timestamp-based, so they're monotonically increasing,
+        // _id = ObjectId timestamp-based, so they are monotonically increasing,
         // sort them descending to comply with requirements
         const result = await BookReviewModel.aggregate([
             { $match: matchStage },

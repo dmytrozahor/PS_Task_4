@@ -1,6 +1,6 @@
 const validBookIds = [620, 621, 644, 645, 646, 648, 651, 654];
 
-jest.mock('../adapters/bookservice.adapter', () => ({
+jest.mock('../adapters/book-service.adapter', () => ({
     BookServiceAdapter: {
         existsByBookId: jest.fn(async (id: number) => validBookIds.includes(id))
     },
@@ -11,7 +11,7 @@ import mongoose from 'mongoose';
 import { MongoMemoryServer } from 'mongodb-memory-server';
 import app from '../app';
 import { BookReviewModel } from '../schema/review.model';
-import { BookRatingModel } from '../schema/bookrating.model';
+import { BookratingModel } from '../schema/bookrating.model';
 
 let mongod: MongoMemoryServer;
 
@@ -54,7 +54,7 @@ describe("Review API Integration", () => {
                 }
             });
 
-            const ratingDoc = await BookRatingModel.findOne({ bookId: 620 }).lean();
+            const ratingDoc = await BookratingModel.findOne({ bookId: 620 }).lean();
             expect(ratingDoc?.reviewCount).toBe(1);
             expect(ratingDoc?.averageRating).toBe(5);
         });
@@ -88,7 +88,7 @@ describe("Review API Integration", () => {
             { bookId: 621, rating: 4, comment: "Good" },
             { bookId: 621, rating: 3, comment: "Average" }
         ]);
-        await BookRatingModel.create({ bookId: 621, reviewCount: 2, ratingSum: 7, averageRating: 3.5 });
+        await BookratingModel.create({ bookId: 621, reviewCount: 2, ratingSum: 7, averageRating: 3.5 });
 
         const res = await request(app)
             .get("/api/review")
@@ -106,7 +106,7 @@ describe("Review API Integration", () => {
             { bookId: 644, rating: 5, comment: "Great" },
             { bookId: 644, rating: 2, comment: "Bad" }
         ]);
-        await BookRatingModel.create({ bookId: 644, reviewCount: 2, ratingSum: 7, averageRating: 3.5 });
+        await BookratingModel.create({ bookId: 644, reviewCount: 2, ratingSum: 7, averageRating: 3.5 });
 
         const res = await request(app)
             .get("/api/review")

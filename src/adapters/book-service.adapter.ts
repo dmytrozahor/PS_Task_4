@@ -21,7 +21,7 @@ export const BookServiceAdapter : IBookServiceAdapter = {
 
             return !(res.status == 404 || res.data['id'] !== bookId);
         } catch (err){
-            console.error("BookServiceAdapter couldn't resolve the backend.", err)
+            console.error("BookserviceAdapter couldn't resolve the backend.", err)
             return false;
         }
     }
