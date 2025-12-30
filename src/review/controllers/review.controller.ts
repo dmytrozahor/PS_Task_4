@@ -1,5 +1,5 @@
 import {NextFunction, Request, Response} from "express";
-import {ApiSuccess} from "@/utils/ApiSucess";
+import {ApiSuccess} from "@/utils/ApiSuccess";
 import {asyncHandler} from "../../middleware/async-middleware";
 import {ReviewService} from "../services/review.service";
 

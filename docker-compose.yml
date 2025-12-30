@@ -1,23 +1,20 @@
 version: "3.9"
 
 services:
-  mongodb:
-    image: mongo:latest
-    container_name: mongodb
-    hostname: mongodb
-    volumes:
-      - ./mongodb/initdb.d/mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
-      - mongodb-data:/data/db
-      - mongodb-log:/var/log/mongodb
-    env_file:
-      - .env
-    environment:
-      MONGODB_INIT_ROOT_USERNAME: 'root' # ${MONGODB_INITDB_ROOT_USERNAME}
-      MONGODB_INIT_ROOT_PASSWORD: 'root' # ${MONGO_DB_INITDB_ROOT_PASSWORD}
+  mongo:
+    image: mongo:8.0.4
     ports:
-      - "27017:27017"
+      - '27019:27017'
+    volumes:
+      - ./docker/data/mongo/db:/data/db
     networks:
-      - mongodb-network
+      - default
+    healthcheck:
+      test: ["CMD", "mongosh", "--eval", "db.runCommand('ping').ok"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
   api:
     build: .
     container_name: book-review-api
@@ -33,23 +30,49 @@ services:
 
       DD_LOGS_INJECTION: "true"
       NODE_ENV: development
-
     depends_on:
-      - datadog-agent
-      - mongodb
+      mongo:
+        condition: service_healthy
+      book-api:
+        condition: service_started
+      datadog-agent:
+        condition: service_started
     networks:
-      - mongodb-network
+      - default
+
+  book-api:
+    build: ./PS_Task_2
+    container_name: book-api
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/profitsoft
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: root
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+      SPRING_JPA_SHOW_SQL: "true"
+    depends_on:
+      datadog-agent:
+        condition: service_started
+    healthcheck:
+      test: [ "CMD-SHELL", "curl --silent --fail http://localhost:8080/actuator/health || exit 1" ]
+      interval: 15s
+      timeout: 5s
+      retries: 8
+    networks:
+      - default
 
   datadog-agent:
     image: gcr.io/datadoghq/agent:7
     container_name: datadog-agent
     environment:
       DD_API_KEY: ${DD_API_KEY}
-      DD_SITE: datadoghq.com
+      DD_SITE: datadoghq.eu
 
       DD_APM_ENABLED: "true"
-
       DD_DOGSTATSD_NON_LOCAL_TRAFFIC: "true"
+
+      DD_PROCESS_AGENT_ENABLED: "false"
 
       DD_LOGS_ENABLED: "true"
       DD_LOGS_CONFIG_CONTAINER_COLLECT_ALL: "true"
@@ -72,6 +95,5 @@ volumes:
     name: mongo-log
 
 networks:
-  mongodb-network:
+  default:
     driver: bridge
-    name: mongo-network

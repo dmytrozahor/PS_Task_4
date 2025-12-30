@@ -23,12 +23,16 @@ const populationValidation = async (
     const validData = req.body;
 
     if (validData.bookId) {
-        const bookIdExists = await BookServiceAdapter.existsByBookId(validData.bookId);
+        try {
+            const bookIdExists = await BookServiceAdapter.existsByBookId(validData.bookId);
 
-        if (!bookIdExists) {
-            return res.status(404).json(
-                new ApiError({}, 404, "Book with the submitted bookId wasn't found on the backend")
-            );
+            if (!bookIdExists) {
+                return res.status(404).json(
+                    new ApiError({}, 404, "Book with the submitted bookId wasn't found on the backend")
+                );
+            }
+        } catch (err){
+            return res.status(500).json(err);
         }
     }
 

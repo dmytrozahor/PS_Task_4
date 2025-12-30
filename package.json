@@ -6,7 +6,7 @@
     "test": "cross-env NODE_ENV=test jest --testTimeout=5000 --detectOpenHandles",
     "status": "tsc --p tsconfig.json --listFiles",
     "start": "node -r module-alias/register ./dist/server.js",
-    "build": "tsc -p ./tsconfig.prod.json",
+    "build": "tsc -p ./tsconfig.prod.json && tsc-alias",
     "dev": "nodemon --watch 'src/**/*.ts' --exec ts-node -r tsconfig-paths/register src/server.ts"
   },
   "_moduleAliases": {
@@ -48,6 +48,7 @@
     "nodemon": "^2.0.22",
     "ts-jest": "^29.1.0",
     "ts-node": "^10.9.1",
+    "tsc-alias": "^1.8.16",
     "tsconfig-paths": "^4.2.0",
     "typescript": "^5.0.4"
   }
